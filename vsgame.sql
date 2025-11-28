@@ -1,163 +1,72 @@
--- phpMyAdmin SQL Dump
--- version 5.2.1
--- https://www.phpmyadmin.net/
---
--- Servidor: 127.0.0.1
--- Tiempo de generación: 25-11-2025 a las 17:00:02
--- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.2.12
+-- Crear base de datos
+CREATE DATABASE IF NOT EXISTS vsgame;
+USE vsgame;
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
+-- Tabla de Usuarios
+CREATE TABLE IF NOT EXISTS usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
+-- Tabla de Cartas
+CREATE TABLE IF NOT EXISTS cartas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    ataque INT NOT NULL,
+    defensa INT NOT NULL,
+    imagen VARCHAR(255) DEFAULT NULL,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+-- Tabla de Partidas (Resultados)
+CREATE TABLE IF NOT EXISTS partidas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    puntuacion INT NOT NULL,
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+);
 
---
--- Base de datos: `vsgame`
---
-CREATE DATABASE IF NOT EXISTS `vsgame` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `vsgame`;
+-- Tabla de Configuración
+CREATE TABLE IF NOT EXISTS configuracion (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    clave VARCHAR(50) NOT NULL UNIQUE,
+    valor TEXT,
+    fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
 
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `cartas`
---
-
-CREATE TABLE `cartas` (
-  `id` int(11) NOT NULL,
-  `nombre` varchar(100) NOT NULL,
-  `ataque` int(11) NOT NULL,
-  `defensa` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `cartas`
---
-
-INSERT INTO `cartas` (`id`, `nombre`, `ataque`, `defensa`) VALUES
-(1, 'Guerrero', 5, 3),
-(2, 'Mago', 3, 6),
-(3, 'Asesino', 6, 2),
-(4, 'Tanque', 2, 7),
-(5, 'Arquero', 4, 4),
-(6, 'Caballero', 5, 5);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `config`
---
-
-CREATE TABLE `config` (
-  `id` int(11) NOT NULL,
-  `clave` varchar(100) NOT NULL,
-  `valor` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `partidas`
---
-
-CREATE TABLE `partidas` (
-  `id` int(11) NOT NULL,
-  `usuario_id` int(11) NOT NULL,
-  `puntos_usuario` int(11) NOT NULL,
-  `puntos_maquina` int(11) NOT NULL,
-  `fecha` datetime DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `usuarios`
---
-
-CREATE TABLE `usuarios` (
-  `id` int(11) NOT NULL,
-  `nombre` varchar(100) NOT NULL,
-  `email` varchar(150) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `fecha_registro` datetime DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Índices para tablas volcadas
---
-
---
--- Indices de la tabla `cartas`
---
-ALTER TABLE `cartas`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `config`
---
-ALTER TABLE `config`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `clave` (`clave`);
-
---
--- Indices de la tabla `partidas`
---
-ALTER TABLE `partidas`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_partidas_usuario` (`usuario_id`);
-
---
--- Indices de la tabla `usuarios`
---
-ALTER TABLE `usuarios`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `email` (`email`);
-
---
--- AUTO_INCREMENT de las tablas volcadas
---
-
---
--- AUTO_INCREMENT de la tabla `cartas`
---
-ALTER TABLE `cartas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
--- AUTO_INCREMENT de la tabla `config`
---
-ALTER TABLE `config`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `partidas`
---
-ALTER TABLE `partidas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `usuarios`
---
-ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- Restricciones para tablas volcadas
---
-
---
--- Filtros para la tabla `partidas`
---
-ALTER TABLE `partidas`
-  ADD CONSTRAINT `fk_partidas_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE;
-COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+-- Insertar cartas desde cards.zip
+INSERT INTO cartas (nombre, ataque, defensa, imagen) VALUES
+('Carta 1', 50, 40, '1_card.jpg'),
+('Carta 2', 55, 42, '2_card.jpg'),
+('Carta 3', 60, 45, '3_card.jpg'),
+('Carta 4', 52, 38, '4_card.jpg'),
+('Carta 5', 58, 44, '5_card.jpg'),
+('Carta 6', 62, 48, '6_card.jpg'),
+('Carta 7', 65, 50, '7_card.jpg'),
+('Carta 8', 70, 52, '8_card.jpg'),
+('Carta 9', 72, 54, '9_card.jpg'),
+('Carta 10', 75, 55, '10_card.jpg'),
+('Carta 11', 78, 60, '11_card.jpg'),
+('Carta 12', 80, 62, '12_card.jpg'),
+('Carta 13', 82, 64, '13_card.jpg'),
+('Carta 14', 85, 66, '14_card.jpg'),
+('Carta 15', 88, 70, '15_card.jpg'),
+('Carta 16', 90, 72, '16_card.jpg'),
+('Carta 17', 92, 74, '17_card.jpg'),
+('Carta 18', 94, 76, '18_card.jpg'),
+('Carta 19', 96, 78, '19_card.jpg'),
+('Carta 20', 98, 80, '20_card.jpg'),
+('Carta 21', 100, 82, '21_card.jpg'),
+('Carta 22', 102, 84, '22_card.jpg'),
+('Carta 23', 104, 86, '23_card.jpg'),
+('Carta 24', 106, 88, '24_card.jpg'),
+('Carta 25', 108, 90, '25_card.jpg'),
+('Carta 26', 110, 92, '26_card.jpg'),
+('Carta 27', 112, 94, '27_card.jpg'),
+('Carta 28', 114, 96, '28_card.jpg'),
+('Carta 29', 116, 98, '29_card.jpg'),
+('Carta 30', 118, 100, '30_card.jpg');
