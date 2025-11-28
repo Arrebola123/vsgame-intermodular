@@ -21,17 +21,19 @@ let gameState = {
     isGameOver:false
 };
 
-async function start_game(){
+
+async function login(){
     //validar campos, iniciar sesión con login.php y solicitar inicio de juego con start_game.php
-    const email = email_inicio.value.trim();
-    const password = contra_inicio.value.trim();
-    
-    if(validarEmail(email) && validarPassword(contra)){
+    const email = email_inicio.value;
+    const password = contra_inicio.value;
+    let mensaje = null;
+    if(validarEmail(email) && validarPassword(password)){
         const inicio_sesion ={
             email:email,
             password:password
         }
-        await fetch('POST',{
+
+        await fetch('prueba.php',{
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(inicio_sesion)
@@ -44,10 +46,12 @@ async function start_game(){
                     password : datos.password, 
                     nombre : datos.nombre
                 }
+                mensaje = datos.mensaje;
+                return usuario;
             }
             else{
                 //Poner el  mensaje desde php
-                console.error("Error:", datos.mensaje);
+                mensaje = datos.mensaje
                 return
             }
         })
@@ -55,10 +59,19 @@ async function start_game(){
             console.error("Error en la petición:", error);
             return
         });
-
-        gameState.usuario = {email};
         modal_inicio.style.display = 'none';
+
+    }else{
+        mensaje = "El email o la contraseña no cumplen los requerimientos.";
     }
+}
+
+async function start_game(usuario){
+    await fetch('start_game.php',{
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(usuario)
+    })
 }
 
 function crear_usuario(){
@@ -70,7 +83,10 @@ function crear_usuario(){
     modal_inicio.style.display = 'flex';
 }
 
-btn_inicio.addEventListener('click',start_game);
+btn_inicio.addEventListener('click',async function(){
+    const usuario = await login();
+    start_game(usuario);
+});
 btn_registro.addEventListener('click',crear_usuario);
 btn_modal_registro.addEventListener('click',function(){
     modal_inicio.style.display = 'none';
@@ -91,7 +107,7 @@ function validarEmail(email) {
 }
 
 function validarPassword(password) {
-  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{6,}$/;
   return passwordRegex.test(password);
 }
 
