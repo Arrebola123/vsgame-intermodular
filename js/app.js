@@ -15,7 +15,7 @@ const btn_modal_login = document.getElementById('login-modal-btn');
 
 let gameState = {
     usuario:null,
-    rondas:5,
+    rondas:0,
     wins:0,
     loses:0,
     isGameOver:false
@@ -50,7 +50,6 @@ async function login(){
                 return usuario;
             }
             else{
-                //Poner el  mensaje desde php
                 mensaje = datos.mensaje
                 return
             }
@@ -71,7 +70,24 @@ async function start_game(usuario){
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(usuario)
+    }).then(response => response.json())
+    .then(datos => {
+        if(datos.status === "success"){
+            gameState.usuario = datos.usuario;
+            gameState.wins = datos.wins;
+            gameState.loses = datos.loses;
+            gameState.rondas = datos.rondas;
+        }
     })
+    .catch(error=>{
+        console.error("Error en la petición:",error);
+    });
+
+
+}
+
+function cargarCartas(){
+    
 }
 
 function crear_usuario(){
