@@ -19,32 +19,32 @@
 <!-- container -->
 <div class="container">
     <div class="card">
-      <img src="img/cards/1_card.jpg" alt="Carta del Jugador" >
+      <img src="img/cards/1_card.jpg" alt="Carta del Jugador" id="playerCard">
     </div>
     <img src="img/vs.png" alt="VS" class="vs">
     <div class="card">
-      <img src="img/cards/2_card.jpg" alt="Carta de la Máquina">
+      <img src="img/cards/2_card.jpg" alt="Carta de la Máquina" id="gameCard">
     </div>
     </div>
 <div class="container">
     <div class="buttons" >
-      <a href="#" id="atacar" onclick="atacar(); return false">
+      <a href="#" id="atacar">
         <img src="img/atacar.png" alt="atacar" class="btn" >
       </a>
-      <a href="#" id="defensa"  onclick="defender(); return false">
+      <a href="#" id="defender">
         <img src="img/defender.png" alt="defender" class="btn" >
       </a>
     </div>
 
     
 </div>
-  <a href="/daw/poo/videogame.php">
-      <img src="img/restartgame.png" alt="reiniciar" id="restartGame">
+  <a href="#" id="restartGame">
+      <img src="img/restartgame.png" alt="reiniciar" >
   </a>
 <div class="score">
     <div class="contentScore">
-    <div id="bandera" class="show">
-      <img src="img/win1.png" alt="win1" class="win1">
+    <div id="bandera" class="">
+      <img src="" alt="">
       <!-- <img src="img/win2.png" alt="win2" class="win2"> -->
     
       
@@ -54,10 +54,10 @@
         1
       </div>
       <div class="puntuacionJ1">
-        2
+        
       </div>
       <div class="puntuacionJ2">
-         4
+         
       </div>
     </div>
 </div>
@@ -67,18 +67,18 @@
 <div class="popup active" id="popup">
     <div class="popup-content">
         <button class="close-btn" id="closePopupBtn">&times;</button>
-        <h2>Jugada</h2>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum, provident.
+        <h2></h2>
+        <p class="popup-text">Texto a cambiar</p>
     </div>
 </div>
 <div id="login-modal" class="modal-overlay" style="display: flex">
   <div class="modal-content">
     <h2 id="modal-title">Iniciar Sesión</h2>
     <label for="player-email">Email:</label>
-    <input type="email" id="player-email" placeholder="Introduce tu email"/>
+    <input type="email" id="player-email" placeholder="Introduce tu email" value="ricardo.renones@gmail.com"/>
     <br><br>
     <label for="player-passwd">Contraseña:</label>
-    <input type="password" id="player-passwd"/>
+    <input type="password" id="player-passwd" value="Ricky08031979**"/>
     <br><br>
     <button id="login-btn">Iniciar</button>
     <br><br>
