@@ -36,50 +36,56 @@ let gameState = {
     loses:0,
     isGameOver:false
 };
-
+let rondasJugadas = 1;
 
 async function login(){
-    //validar campos, iniciar sesión con login.php y solicitar inicio de juego con start_game.php
     const email = email_inicio.value;
     const password = contra_inicio.value;
     let mensaje = null;
-    if(validarEmail(email) && validarPassword(password)){
-        const inicio_sesion ={
-            email:email,
-            password:password
-        }
+    let usuario = null;
 
-        await fetch('prueba.php',{
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(inicio_sesion)
-        })
-        .then(response => response.json())
-        .then(datos => {
-            if(datos.status === "success"){
-                const usuario ={
-                    email : datos.email,
-                    password : datos.password, 
-                    nombre : datos.nombre
-                }
+    if (validarEmail(email) && validarPassword(password)) {
+        const inicio_sesion = {
+            email: email,
+            password: password
+        };
+
+        try {
+            const response = await fetch('prueba.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(inicio_sesion)
+            });
+
+            const datos = await response.json();
+
+            if (datos.status === "success") {
+                usuario = {
+                    email: datos.email,
+                    password: datos.password,
+                    nombre: datos.nombre
+                };
                 mensaje = datos.mensaje;
-                return usuario;
+                //mostrar mensaje en pantalla
+                modal_inicio.style.display = 'none';
+            } else {
+                mensaje = datos.mensaje;
+                //mostrar mensaje en pantalla
+                console.error(mensaje);
             }
-            else{
-                mensaje = datos.mensaje
-                return
-            }
-        })
-        .catch(error => {
-            console.error("Error en la petición:", error);
-            return
-        });
-        modal_inicio.style.display = 'none';
 
-    }else{
+        } catch (error) {
+            console.error("Error en la petición:", error);
+        }
+    } else {
         mensaje = "El email o la contraseña no cumplen los requerimientos.";
+        //mostrar en pantalla
+        console.error(mensaje);
     }
+
+    return usuario;
 }
+
 
 async function start_game(usuario){
     await fetch('prueba_start.php',{
@@ -106,56 +112,149 @@ async function handle_next_round(action){
     let carta1 = {};//objeto de carta usuario
     let carta2 = {};//objeto de carta juego
     try{
-        const response = await fetch('prueba_cartas.php');
-        const data = await response.json();
 
-        //asignacion de variables para los 2 objetos a partir de la respuesta
-        carta1.ataque = data.ataque1;
-        carta1.defensa = data.defensa1;
-        carta1.url = data.url1;
-
-        carta2.ataque = data.ataque2;
-        carta2.defensa = data.defensa2;
-        carta2.url = data.url2;
-
-        puntuacionJ1.textContent = gameState.wins;
-        puntuacionJ2.textContent = gameState.loses;
-
+        //Primera ronda obtencion de cartas
         if(action == "start"){
+            const response = await fetch('prueba_cartas.php');
+            const data = await response.json();
+
+            //asignacion de variables para los 2 objetos a partir de la respuesta
+            carta1.ataque = data.ataque1;
+            carta1.defensa = data.defensa1;
+            carta1.url = data.url1;
+
+            carta2.ataque = data.ataque2;
+            carta2.defensa = data.defensa2;
+            carta2.url = data.url2;
+
             cartaJugador.src = 'img/cards/'+carta1.url;
-            cartaJugador.dataset.attack = carta1.ataque;
+            cartaJugador.dataset.ataque = carta1.ataque;
             cartaJugador.dataset.defensa = carta1.defensa;
 
             cartaJuego.src = 'img/cards/'+carta2.url;
-            cartaJuego.dataset.attack = carta1.ataque;
-            cartaJuego.dataset.defensa = carta1.defensa;
+            cartaJuego.dataset.ataque = carta2.ataque;
+            cartaJuego.dataset.defensa = carta2.defensa;
 
             tituloPopup.textContent = `Bienvenido ${gameState.nombre}!` ;
             textoPopup.textContent = 'Cierra este menu para comenzar a jugar';
 
-            contadorRondas.textContent = 1;
-
+            contadorRondas.textContent = rondasJugadas;
         }
+
+        //El jugador elije ataque
         else if(action == "attack"){
-            if(cartaJugador.dataset.attack > cartaJuego.dataset.defensa){
-                //gana
+            const ataqueJ = parseInt(cartaJugador.dataset.ataque);
+            const defensaM = parseInt(cartaJuego.dataset.defensa);
+
+            if (ataqueJ > defensaM) {
+                // gana jugador
+                rondasJugadas++;
+                gameState.wins++;
+                tituloPopup.textContent = `Jugada`;
+                textoPopup.textContent = `Gana el jugador por ${ataqueJ} de ataque frente a ${defensaM} de defensa`;
+                popup.classList.add('active');
+                bandera.src = 'img/win1.png';
+                bandera.alt = 'win';
+                contenedorBandera.classList.add('show');
             }
-            else if(cartaJugador.dataset.attack == cartaJuego.dataset.defensa){
-                //empate
+            else if (ataqueJ === defensaM) {
+                // empate
+                tituloPopup.textContent = `Jugada`;
+                textoPopup.textContent = `Empate: ambos tienen ${ataqueJ} de ataque/defensa`;
+                popup.classList.add('active');
+                bandera.src = 'img/win1.png';
+                bandera.alt = 'draw';
+                contenedorBandera.classList.add('show');
             }
-            else{
-                //pierde
+            else {
+                // pierde jugador
+                rondasJugadas++;
+                gameState.loses++;
+                tituloPopup.textContent = `Jugada`;
+                textoPopup.textContent = `Gana la máquina por ${defensaM} de defensa frente a ${ataqueJ} de ataque`;
+                popup.classList.add('active');
+                bandera.src = 'img/win2.png';
+                bandera.alt = 'loss';
+                contenedorBandera.classList.add('show');
             }
-        }
-        else if(action == "defend"){
         }
 
-        if(gameState.rondas < (parseInt(contadorRondas.textContent))) endGame();
+        //El jugador elije defensa
+        else if(action == "defend"){
+            const defensaJ = parseInt(cartaJugador.dataset.defensa);
+            const ataqueM  = parseInt(cartaJuego.dataset.ataque);
+
+            if (defensaJ > ataqueM) {
+                // gana
+                rondasJugadas++;
+                gameState.wins++;
+                tituloPopup.textContent = `Jugada`;
+                textoPopup.textContent = `Gana el jugador por ${defensaJ} de defensa frente a ${ataqueM} de ataque`;
+                popup.classList.add('active');
+                bandera.src = 'img/win1.png';
+                bandera.alt = 'win';
+                contenedorBandera.classList.add('show');
+            }
+            else if (defensaJ == ataqueM) {
+                // empate
+                tituloPopup.textContent = `Jugada`;
+                textoPopup.textContent = `Empate del jugador y la maquina de ${defensaJ} de defensa frente a ${ataqueM} de ataque`;
+                popup.classList.add('active');
+                bandera.src = 'img/win1.png';
+                bandera.alt = 'draw';
+                contenedorBandera.classList.add('show');
+            }
+            else {
+                // pierde
+                rondasJugadas++;
+                gameState.loses++;
+                tituloPopup.textContent = `Jugada`;
+                textoPopup.textContent = `Gana la maquina por ${ataqueM} de ataque frente a ${defensaJ} de defensa`;
+                popup.classList.add('active');
+                bandera.src = 'img/win2.png';
+                bandera.alt = 'loss';
+                contenedorBandera.classList.add('show');
+            }
+        }
+
+        if(gameState.rondas < rondasJugadas){ 
+                endGame();
+        }
+        else{
+            contadorRondas.textContent = rondasJugadas;
+
+            const response = await fetch('prueba_cartas.php');
+            const data = await response.json();
+
+            carta1.ataque = data.ataque1;
+            carta1.defensa = data.defensa1;
+            carta1.url = data.url1;
+
+            carta2.ataque = data.ataque2;
+            carta2.defensa = data.defensa2;
+            carta2.url = data.url2;
+
+            cartaJugador.src = 'img/cards/'+carta1.url;
+            cartaJugador.dataset.ataque = carta1.ataque;
+            cartaJugador.dataset.defensa = carta1.defensa;
+
+            cartaJuego.src = 'img/cards/'+carta2.url;
+            cartaJuego.dataset.ataque = carta2.ataque;
+            cartaJuego.dataset.defensa = carta2.defensa;
+            setTimeout(() => {
+                bandera.src = '';
+                bandera.alt = '';
+                contenedorBandera.classList.remove('show');
+            }, 4500);
+        }
+        puntuacionJ1.textContent = gameState.wins;
+        puntuacionJ2.textContent = gameState.loses;
 
     }catch(error){
         console.error('La petición de cartas ha fallado:', error);
     }
 }
+
 
 function crear_usuario(){
     const email = email_registro.value.trim();
@@ -197,27 +296,12 @@ function validarPassword(password) {
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{6,}$/;
   return passwordRegex.test(password);
 }
+closePopupBtn.addEventListener('click', function() {
+    popup.classList.remove('active');
+});
 
-
-
-
-
-    // function atacar(){
-    //     selectOculto.value = 'ataque'; // Cambia el valor del select
-    //     formulario.submit();
-    // };
-
-    // function defender() {
-    //     selectOculto.value = 'defensa'; // Cambia el valor del select
-    //     formulario.submit();
-    // };
-
-    closePopupBtn.addEventListener('click', function() {
-        popup.classList.remove('active');
-    });
-
-    // window.addEventListener('click', function(e) {
-    //     if (e.target === popup) {
-    //         popup.classList.remove('active');
-    //     }
-    // });
+window.addEventListener('click', function(e) {
+     if (e.target === popup) {
+         popup.classList.remove('active');
+     }
+});
