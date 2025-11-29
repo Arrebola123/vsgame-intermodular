@@ -123,32 +123,54 @@ button {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro */
+    background: rgba(0, 0, 0, 0.65);
     justify-content: center;
     align-items: center;
+    backdrop-filter: blur(2px);
 }
 
 /* El contenido del popup */
 .popup-content {
-    background-color: white;
+    background: #121212;
     padding: 20px;
-    border-radius: 5px;
+    border-radius: 10px;
     width: 300px;
     text-align: center;
     position: relative;
+    border: 2px solid rgba(60, 60, 60, 0.9);
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.7), 
+                0 0 0 2px rgba(0, 0, 0, 0.6) inset;
+    color: #d0d0d0;
 }
 
 /* El botón para cerrar el popup */
 .close-btn {
     position: absolute;
-    top: 10px;
+    top: 8px;
     right: 10px;
-    background-color: red;
-    color: white;
+    background: transparent;
+    color: #b3b3b3;
     border: none;
-    padding: 5px 10px;
+    font-size: 1.3rem;
+    font-weight: 700;
     cursor: pointer;
-    border-radius: 50%;
+    transition: color 0.15s ease;
+}
+.close-btn:hover {
+    color: #e2e2e2;
+}
+.popup-content h2 {
+    margin-bottom: 12px;
+    font-size: 1.3rem;
+    color: #c43a3a;
+    letter-spacing: 0.02em;
+    font-weight: 700;
+}
+
+.popup-text {
+    font-size: 1rem;
+    color: #c8c8c8;
+    line-height: 1.4;
 }
 
 /* Mostrar el popup cuando se active */
@@ -281,21 +303,143 @@ button {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.65);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  animation: fadeIn 0.3s ease-out;
+  backdrop-filter: blur(2px);
 }
+
 .modal-content {
-  background: linear-gradient(45deg, #79c3f9, #71abdb);
-  padding: 30px;
+  position: relative;
+  background: #121212;
+  padding: 2.2rem 2.6rem;
   border-radius: 10px;
-  border: 3px solid #0d47a1;
+  border: 2px solid rgba(60, 60, 60, 0.9);
   text-align: center;
-  max-width: 500px;
-  width: 80%;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-  animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  max-width: 420px;
+  width: 90%;
+  color: #d0d0d0;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.7), 
+              0 0 0 2px rgba(0, 0, 0, 0.6) inset;
+}
+
+.modal-content h2 {
+  font-size: 1.6rem;
+  margin-bottom: 1.4rem;
+  color: #c43a3a;
+  letter-spacing: 0.03em;
+  font-weight: 700;
+}
+
+.modal-content label {
+  display: block;
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
+  text-align: left;
+  color: #d4d4d4;
+}
+
+.modal-content input[type="email"],
+.modal-content input[type="password"],
+.modal-content input[type="text"] {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #333333;
+  background: #101010;
+  color: #ffffff;
+  margin-bottom: 1rem;
+  outline: none;
+  font-size: 0.95rem;
+  transition: border 0.15s ease, background 0.15s ease;
+}
+
+.modal-content input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.modal-content input:focus {
+  border-color: #c43a3a;
+  background: #131313;
+}
+
+#login-btn,
+#register-btn {
+  display: inline-block;
+  padding: 0.7rem 2.2rem;
+  border-radius: 8px;
+  border: 1px solid #c43a3a;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  margin-bottom: 0.8rem;
+  background: #c43a3a;
+  color: #f2f2f2;
+  transition: background 0.15s ease, color 0.15s ease, border 0.15s ease;
+}
+
+#login-btn:hover,
+#register-btn:hover {
+  background: #a53131;
+  border-color: #a53131;
+}
+
+#login-btn:active,
+#register-btn:active {
+  opacity: 0.9;
+}
+
+.modal-content p#modal-text {
+  margin-top: 0.8rem;
+  margin-bottom: 0.3rem;
+  font-size: 0.85rem;
+  color: #b3b3b3;
+}
+
+#register-modal-btn,
+#login-modal-btn {
+  background: transparent;
+  border-radius: 6px;
+  padding: 0.45rem 1.4rem;
+  font-size: 0.85rem;
+  border: 1px solid #3a3a3a;
+  color: #cccccc;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border 0.15s ease;
+}
+
+#register-modal-btn:hover,
+#login-modal-btn:hover {
+  background: #1a1a1a;
+  color: #ffffff;
+  border-color: #555555;
+}
+
+.modal-msg-success {
+  font-size: 0.9rem;
+  margin-bottom: 0.8rem;
+  color: #4caf50;      /* verde mate */
+  font-weight: 600;
+  min-height: 1.2rem;
+}
+.modal-msg-error {
+  font-size: 0.9rem;
+  margin-bottom: 0.8rem;
+  color: #c43a3a;      /* rojo mate robusto */
+  font-weight: 600;
+  min-height: 1.2rem;
+}
+
+@media (max-width: 480px) {
+  .modal-content {
+    padding: 1.8rem 1.3rem;
+    max-width: 92%;
+  }
+
+  .modal-content h2 {
+    font-size: 1.35rem;
+  }
 }

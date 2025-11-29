@@ -10,6 +10,9 @@ const contra_registro = document.getElementById('player-passwd-register');
 const btn_registro = document.getElementById('register-btn');
 const btn_modal_login = document.getElementById('login-modal-btn');
 
+const mensajeLogin = document.getElementById("login-msg");
+const mensajeRegistro = document.getElementById("register-msg");
+
 const closePopupBtn = document.getElementById('closePopupBtn');
 const popup = document.getElementById('popup');
 const tituloPopup = popup.querySelector('h2');
@@ -66,11 +69,15 @@ async function login(){
                     nombre: datos.nombre
                 };
                 mensaje = datos.mensaje;
-                //mostrar mensaje en pantalla
-                modal_inicio.style.display = 'none';
+                mensajeLogin.className = "modal-msg-success";
+                mensajeLogin.textContent = mensaje;
+                setTimeout(()=>{
+                    modal_inicio.style.display = 'none';
+                },1200);
             } else {
                 mensaje = datos.mensaje;
-                //mostrar mensaje en pantalla
+                mensajeLogin.className = "modal-msg-error";
+                mensajeLogin.textContent = mensaje;
                 console.error(mensaje);
             }
 
@@ -79,7 +86,8 @@ async function login(){
         }
     } else {
         mensaje = "El email o la contraseña no cumplen los requerimientos.";
-        //mostrar en pantalla
+        mensajeLogin.className = "modal-msg-error";
+        mensajeLogin.textContent = mensaje;
         console.error(mensaje);
     }
 
