@@ -1,0 +1,524 @@
+@property --rotate {
+  syntax: "<angle>";
+  initial-value: 132deg;
+  inherits: false;
+}
+html{
+min-height: 100%;
+}
+body{
+background: url('../img/fondo.jpg'); 
+background-size: cover !important; 
+background-position: center center; 
+background-repeat: no-repeat;
+
+}
+
+.container{
+  display: flex;
+justify-content: center;
+align-items: center;
+text-align: center;
+}
+
+.card {
+    width: 260px; /* Ancho de las cartas */
+    margin: 10px;
+}
+img{
+    max-width: 100%;
+    width: 100%;
+}
+.vs {
+    margin: 20px;
+    width: 100px; /* Ancho de la imagen VS */
+}
+.btn{
+    width: 100px; /* Ancho de las cartas */
+    margin: 10px;
+    transition: all 0.2s ease-in-out;
+
+
+}
+.btn:hover{
+    zoom: 1.05;
+    transition: all 0.2s ease-in-out;
+
+}
+.buttons {
+    margin-top: 20px;
+}
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin: 5px;
+    cursor: pointer;
+}
+
+.card {
+  background: #191c29;
+  position: relative;
+   padding: 3px;
+  border-radius: 6px;
+
+}
+
+.card:hover {
+  color: rgb(88 199 250 / 100%);
+  transition: color 1s;
+}
+.card:hover:before, .card:hover:after {
+  animation: none;
+  opacity: 0;
+}
+.card::before {
+  content: "";
+  width: 104%;
+  height: 102%;
+  border-radius: 8px;
+  background-image: linear-gradient(
+    var(--rotate)
+    , #5ddcff, #3c67e3 43%, #4e00c2);
+    position: absolute;
+    z-index: -1;
+    top: -1%;
+    left: -2%;
+    animation: spin 2.5s linear infinite;
+}
+
+.card::after {
+  position: absolute;
+  content: "";
+  top: calc(var(--card-height) / 6);
+  left: 0;
+  right: 0;
+  z-index: -1;
+  height: 100%;
+  width: 100%;
+  margin: 0 auto;
+  transform: scale(0.8);
+  filter: blur(calc(var(--card-height) / 6));
+  background-image: linear-gradient(
+    var(--rotate)
+    , #5ddcff, #3c67e3 43%, #4e00c2);
+    opacity: 1;
+  transition: opacity .5s;
+  animation: spin 2.5s linear infinite;
+}
+
+#ataque1, #ataque2{
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-color: rgba(255, 0, 0,0.9);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    color: #000;
+    font-size: 14px;
+}
+#defensa1, #defensa2{
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-color: rgba(0, 255, 38,0.9);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    color: #000;
+    font-size: 14px;
+}
+#ataque1, #ataque2{
+  bottom:11.6px;
+  left: 2px;
+}
+#defensa1, #defensa2{
+  bottom:11.6px;
+  right: 2px;
+}
+
+
+@keyframes spin {
+  0% {
+    --rotate: 0deg;
+  }
+  100% {
+    --rotate: 360deg;
+  }
+}
+
+/* El contenedor del popup (por defecto oculto) */
+.popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.65);
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(2px);
+}
+
+/* El contenido del popup */
+.popup-content {
+    background: #121212;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+    text-align: center;
+    position: relative;
+    border: 2px solid rgba(60, 60, 60, 0.9);
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.7), 
+                0 0 0 2px rgba(0, 0, 0, 0.6) inset;
+    color: #d0d0d0;
+}
+
+/* El botón para cerrar el popup */
+.close-btn {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    background: transparent;
+    color: #b3b3b3;
+    border: none;
+    font-size: 1.3rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: color 0.15s ease;
+}
+.close-btn:hover {
+    color: #e2e2e2;
+}
+.popup-content h2 {
+    margin-bottom: 12px;
+    font-size: 1.3rem;
+    color: #c43a3a;
+    letter-spacing: 0.02em;
+    font-weight: 700;
+}
+
+.popup-text {
+    font-size: 1rem;
+    color: #c8c8c8;
+    line-height: 1.4;
+}
+
+/* Mostrar el popup cuando se active */
+.popup.active {
+    display: flex;
+}
+
+/* boton restart */
+#restartGame{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 100px;
+    transition: all 1s ease-in-out;
+}
+#showHistory{
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1a1d29 0%, #2a2d39 100%);
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    transition: all 0.3s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    color: #5ddcff;
+    font-size: 13px;
+    text-decoration: none;
+    text-align: center;
+    line-height: 1.2;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(93, 220, 255, 0.2);
+}
+#showHistory::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #5ddcff, #3c67e3, #4e00c2);
+  z-index: -1;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+#showHistory:hover {
+  top: 15px;
+  transform: scale(1.05);
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(93, 220, 255, 0.4);
+}
+#showHistory:hover::before {
+  opacity: 1;
+}
+
+
+#restartGame:hover{
+    top: 15px;
+    transition: all 1s ease-in-out;
+}
+/* score */
+.score{
+    width: 260px;
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+}
+.contentScore{
+    position: relative;
+    z-index: 3;
+}
+.ronda{
+    width: fit-content;
+    font-size: 2em;
+    color: white;
+    position: absolute;
+    top: 77px;
+    left: 46%;
+}
+.puntuacionJ1{
+    width: fit-content;
+  font-size: 1.6em;
+  color: white;
+  position: absolute;
+  top: 73%;
+  left: 32%;
+  font-weight: 700;
+}
+.puntuacionJ2{
+    width: fit-content;
+  font-size: 1.6em;
+  color: white;
+  position: absolute;
+  top: 73%;
+  left: 59%;
+  font-weight: 700;
+}
+
+/* banderola */
+
+ #bandera {
+  opacity: 1; /* Opacidad inicial */
+  color: black; /* Color del texto */
+  padding: 20px;
+  border-radius: 5px;
+  position: absolute;
+  top:-20px;
+  width: 80px;
+  z-index: -1; /* Asegúrate de que esté por encima de otros elementos */
+  transition: visibility 0s 1s, opacity 1s linear; /* Cambia la visibilidad y opacidad */
+  margin-left: 28%;
+ }
+
+
+
+/* Clase para mostrar el banner */
+.show {
+    visibility: visible; /* Hacer visible */
+    opacity: 1; /* Opacidad completa */
+    transition: opacity 1s linear; /* Solo cambiar opacidad */
+}
+
+#bandera.show {
+        visibility: visible; /* Hacer visible */
+        opacity: 1; /* Opacidad completa */
+}
+
+/* Banderola después de 1 segundo se oculta */
+#bandera.show {
+    animation: fadeOut 4s forwards; /* Llama a la animación */
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+        
+        
+    }
+    10% {
+      z-index: 1;
+      top:-110px;
+                  
+    }
+    50%{
+      top:-5px;
+      z-index: 1;
+      
+    }
+    75% {
+        opacity: 1;
+        top:-110px;
+        z-index: 1;
+
+    }
+    80% {
+        opacity: 1;
+        top:-20px;
+        z-index: -1;
+    }
+    100% {
+          top:20px;
+        z-index: -1;
+
+    }
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(2px);
+}
+
+.modal-content {
+  position: relative;
+  background: #121212;
+  padding: 2.2rem 2.6rem;
+  border-radius: 10px;
+  border: 2px solid rgba(60, 60, 60, 0.9);
+  text-align: center;
+  max-width: 420px;
+  width: 90%;
+  color: #d0d0d0;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.7), 
+              0 0 0 2px rgba(0, 0, 0, 0.6) inset;
+}
+
+.modal-content h2 {
+  font-size: 1.6rem;
+  margin-bottom: 1.4rem;
+  color: #c43a3a;
+  letter-spacing: 0.03em;
+  font-weight: 700;
+}
+
+.modal-content label {
+  display: block;
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
+  text-align: left;
+  color: #d4d4d4;
+}
+
+.modal-content input[type="email"],
+.modal-content input[type="password"],
+.modal-content input[type="text"] {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #333333;
+  background: #101010;
+  color: #ffffff;
+  margin-bottom: 1rem;
+  outline: none;
+  font-size: 0.95rem;
+  transition: border 0.15s ease, background 0.15s ease;
+}
+
+.modal-content input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.modal-content input:focus {
+  border-color: #c43a3a;
+  background: #131313;
+}
+
+#login-btn,
+#register-btn {
+  display: inline-block;
+  padding: 0.7rem 2.2rem;
+  border-radius: 8px;
+  border: 1px solid #c43a3a;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  margin-bottom: 0.8rem;
+  background: #c43a3a;
+  color: #f2f2f2;
+  transition: background 0.15s ease, color 0.15s ease, border 0.15s ease;
+}
+
+#login-btn:hover,
+#register-btn:hover {
+  background: #a53131;
+  border-color: #a53131;
+}
+
+#login-btn:active,
+#register-btn:active {
+  opacity: 0.9;
+}
+
+.modal-content p#modal-text {
+  margin-top: 0.8rem;
+  margin-bottom: 0.3rem;
+  font-size: 0.85rem;
+  color: #b3b3b3;
+}
+
+#register-modal-btn,
+#login-modal-btn {
+  background: transparent;
+  border-radius: 6px;
+  padding: 0.45rem 1.4rem;
+  font-size: 0.85rem;
+  border: 1px solid #3a3a3a;
+  color: #cccccc;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border 0.15s ease;
+}
+
+#register-modal-btn:hover,
+#login-modal-btn:hover {
+  background: #1a1a1a;
+  color: #ffffff;
+  border-color: #555555;
+}
+
+.modal-msg-success {
+  font-size: 0.9rem;
+  margin-bottom: 0.8rem;
+  color: #4caf50;      /* verde mate */
+  font-weight: 600;
+  min-height: 1.2rem;
+}
+.modal-msg-error {
+  font-size: 0.9rem;
+  margin-bottom: 0.8rem;
+  color: #c43a3a;      /* rojo mate robusto */
+  font-weight: 600;
+  min-height: 1.2rem;
+}
+
+@media (max-width: 480px) {
+  .modal-content {
+    padding: 1.8rem 1.3rem;
+    max-width: 92%;
+  }
+
+  .modal-content h2 {
+    font-size: 1.35rem;
+  }
+}

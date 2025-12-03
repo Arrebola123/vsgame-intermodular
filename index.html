@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/main.css">
+    <title>Juego de Cartas</title>
+</head>
+<body>
+
+<!-- Formulario para elegir ataque o defensa -->
+<form action="" method="GET" id="formEnvio" style="display: none";>
+    <select name="opcionJugada" id="opcionJugada">
+        <option value="ataque">Ataque</option>
+        <option value="defensa">Defensa</option>
+    </select>
+    <input type="submit" value="Enviar">
+</form>
+<!-- container -->
+<div class="container">
+    <div class="card">
+      <img src="img/cards/1_card.jpg" alt="Carta del Jugador" id="playerCard">
+      <div id="ataque1"></div>
+      <div id="defensa1"></div>
+    </div>
+    <img src="img/vs.png" alt="VS" class="vs">
+    <div class="card">
+      <img src="img/cards/2_card.jpg" alt="Carta de la Máquina" id="gameCard">
+      <div id="ataque2"></div>
+      <div id="defensa2"></div>
+    </div>
+    </div>
+<div class="container">
+    <div class="buttons" >
+      <a href="#" id="atacar">
+        <img src="img/atacar.png" alt="atacar" class="btn" >
+      </a>
+      <a href="#" id="defender">
+        <img src="img/defender.png" alt="defender" class="btn" >
+      </a>
+    </div>
+
+    
+</div>
+  <a href="#" id="restartGame">
+      <img src="img/restartgame.png" alt="reiniciar" >
+  </a>
+  <a href="#" id="showHistory">
+      Mostrar Historial
+  </a>
+<div class="score">
+    <div class="contentScore">
+    <div id="bandera" class="">
+      <img src="" alt="">
+    </div>
+      <img src="img/score.png" alt="reiniciar" id="scoreGame">
+      <div class="ronda">
+        1
+      </div>
+      <div class="puntuacionJ1">
+        
+      </div>
+      <div class="puntuacionJ2">
+         
+      </div>
+    </div>
+</div>
+
+
+
+<div class="popup active" id="popup">
+    <div class="popup-content">
+        <button class="close-btn" id="closePopupBtn">&times;</button>
+        <h2></h2>
+        <p class="popup-text">Texto a cambiar</p>
+    </div>
+</div>
+<div id="login-modal" class="modal-overlay" style="display: flex">
+  <div class="modal-content">
+    <h2 id="modal-title">Iniciar Sesión</h2>
+    <p id="login-msg" class="modal-msg"></p>
+    <label for="player-email">Email:</label>
+    <input type="email" id="player-email" placeholder="Introduce tu email" value="ricardo.renones@gmail.com"/>
+    <br><br>
+    <label for="player-passwd">Contraseña:</label>
+    <input type="password" id="player-passwd" value="Prueba123"/>
+    <br><br>
+    <button id="login-btn">Iniciar</button>
+    <br><br>
+    <p id="modal-text">No tienes cuenta?</p>
+    <button id="register-modal-btn">Crear cuenta</button>
+  </div>
+</div>
+<div id="register-modal" class="modal-overlay" style="display: none">
+  <div class="modal-content">
+    <h2 id="modal-title">Crear cuenta</h2>
+    <p id="register-msg" class="modal-msg"></p>
+    <label for="player-name-register">Nombre:</label>
+    <input type="text" id="player-name-register" placeholder="Introduce tu nombre"/>
+    <br><br>
+    <label for="player-email-register">Email:</label>
+    <input type="email" id="player-email-register" placeholder="Introduce tu email"/>
+    <br><br>
+    <label for="player-passwd">Contraseña:</label>
+    <input type="password" id="player-passwd-register"/>
+    <br><br>
+    <button id="register-btn">Crear cuenta</button>
+    <br><br>
+    <p id="modal-text">Tienes cuenta?</p>
+    <button id="login-modal-btn">Iniciar Sesión</button>
+  </div>
+</div>
+<div id="history-modal" class="modal-overlay" style="display: none">
+  <div class="modal-content">
+    <button class="close-btn" id="closeHistoryBtn">&times;</button>
+    <h2>Historial</h2>
+    <div id="history-content" class="history-content">
+    </div>
+  </div>
+</div>
+<script src="js/app.js"></script>
+</body>
+</html>
