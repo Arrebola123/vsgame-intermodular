@@ -8,12 +8,9 @@ class BaseDeDatos
     public function conectar()
     {
         $this->conexion = null;
-
         try {
             $dsn = "mysql:host=" . Database::$host . ";dbname=" . Database::$nombre_bd;
             $this->conexion = new PDO($dsn, Database::$usuario, Database::$password);
-
-            // Configurar errores y codificación
             $this->conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->conexion->exec("set names utf8");
 

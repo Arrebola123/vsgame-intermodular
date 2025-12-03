@@ -44,17 +44,12 @@ class PartidaController
         if ($this->partida->guardar()) {
             return ["mensaje" => "Puntuación guardada exitosamente."];
         }
-        return ["mensaje" => "No se pudo guardar la puntuación.", "error" => true];
+        return ["mensaje" => "No se ha podido guardar la puntuación.", "error" => true];
     }
 
-    public function obtenerRanking()
+    public function obtenerHistorial($usuario_id)
     {
-        $stmt = $this->partida->obtenerRanking();
-        $puntuaciones = [];
-        while ($fila = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            array_push($puntuaciones, $fila);
-        }
-        return $puntuaciones;
+        return $this->partida->obtenerHistorial($usuario_id);
     }
 }
 ?>

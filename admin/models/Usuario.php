@@ -14,18 +14,14 @@ class Usuario
         $this->conexion = $db;
     }
 
-    // Crear nuevo usuario
+    //Crear un nuevo usuario
     public function crear()
     {
         $consulta = "INSERT INTO " . $this->tabla . " SET usuario=:usuario, email=:email, password=:password";
         $stmt = $this->conexion->prepare($consulta);
-
-        // Limpiar datos
         $this->usuario = htmlspecialchars(strip_tags($this->usuario));
         $this->email = htmlspecialchars(strip_tags($this->email));
         $this->password = htmlspecialchars(strip_tags($this->password));
-
-        // Vincular valores
         $stmt->bindParam(":usuario", $this->usuario);
         $stmt->bindParam(":email", $this->email);
         $stmt->bindParam(":password", $this->password);

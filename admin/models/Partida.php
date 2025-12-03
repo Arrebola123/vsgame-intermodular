@@ -35,17 +35,24 @@ class Partida
         return false;
     }
 
-    //Obtener ranking (top 10)
-    public function obtenerRanking($limite = 10)
+    //Obtener historial del jugador
+    public function obtenerHistorial($usuario_id)
     {
-        $consulta = "SELECT u.usuario, p.puntuacion, p.fecha 
-                  FROM " . $this->tabla . " p
-                  JOIN usuarios u ON p.usuario_id = u.id
-                  ORDER BY p.puntuacion DESC
-                  LIMIT " . $limite;
-        $stmt = $this->conexion->prepare($consulta);
-        $stmt->execute();
-        return $stmt;
+    $consulta = "SELECT 
+                    u.usuario,
+                    p.wins,
+                    p.loses,
+                    p.fecha
+                 FROM " . $this->tabla . " p
+                 JOIN usuarios u ON p.usuario_id = u.id
+                 WHERE p.usuario_id = :usuario_id
+                 ORDER BY p.fecha DESC
+                 LIMIT 10"; //Esta consulta nos da las últimas 10 partidas del usuario (No recordaba como hacerlo así que consulté a ChatGPT)
+
+    $stmt = $this->conexion->prepare($consulta);
+    $stmt->bindValue(':usuario_id', $usuario_id, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
 ?>
