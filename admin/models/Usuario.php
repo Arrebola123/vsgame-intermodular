@@ -36,7 +36,6 @@ class Usuario
         return false;
     }
 
-    // Obtener usuario por email
     public function obtenerPorEmail($email)
     {
         $consulta = "SELECT id, usuario, email, password FROM " . $this->tabla . " WHERE email = ? LIMIT 0,1";
@@ -53,6 +52,13 @@ class Usuario
             return true;
         }
         return false;
+    }
+    public function obtenerTodos()
+    {
+        $consulta = "SELECT * FROM " . $this->tabla;
+        $stmt = $this->conexion->prepare($consulta);
+        $stmt->execute();
+        return $stmt;
     }
 }
 ?>

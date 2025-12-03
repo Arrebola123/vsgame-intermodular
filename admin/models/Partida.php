@@ -6,7 +6,8 @@ class Partida
 
     public $id;
     public $usuario_id;
-    public $puntuacion;
+    public $wins;
+    public $loses;
     public $fecha;
 
     public function __construct($db)
@@ -14,17 +15,19 @@ class Partida
         $this->conexion = $db;
     }
 
-    // Guardar puntuación
+    //Guardar la puntuación de la partida.
     public function guardar()
     {
-        $consulta = "INSERT INTO " . $this->tabla . " SET usuario_id=:usuario_id, puntuacion=:puntuacion";
+        $consulta = "INSERT INTO " . $this->tabla . " SET usuario_id=:usuario_id, wins=:wins, loses=:loses";
         $stmt = $this->conexion->prepare($consulta);
 
         $this->usuario_id = htmlspecialchars(strip_tags($this->usuario_id));
-        $this->puntuacion = htmlspecialchars(strip_tags($this->puntuacion));
+        $this->wins = htmlspecialchars(strip_tags($this->wins));
+        $this->loses = htmlspecialchars(strip_tags($this->loses));
 
         $stmt->bindParam(":usuario_id", $this->usuario_id);
-        $stmt->bindParam(":puntuacion", $this->puntuacion);
+        $stmt->bindParam(":wins", $this->wins);
+        $stmt->bindParam(":loses", $this->loses);
 
         if ($stmt->execute()) {
             return true;
@@ -32,7 +35,7 @@ class Partida
         return false;
     }
 
-    // Obtener ranking (top 10)
+    //Obtener ranking (top 10)
     public function obtenerRanking($limite = 10)
     {
         $consulta = "SELECT u.usuario, p.puntuacion, p.fecha 

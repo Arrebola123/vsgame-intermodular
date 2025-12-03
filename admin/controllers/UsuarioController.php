@@ -18,7 +18,6 @@ class UsuarioController
     {
         $this->usuario->usuario = $datos['usuario'];
         $this->usuario->email = $datos['email'];
-        // Encriptar contraseña
         $this->usuario->password = password_hash($datos['password'], PASSWORD_BCRYPT);
 
         if ($this->usuario->crear()) {
@@ -70,6 +69,16 @@ class UsuarioController
             ];
         }
         return ["logueado" => false];
+    }
+
+    public function index()
+    {
+        $stmt = $this->usuario->obtenerTodos();
+        $usuarios = [];
+        while ($fila = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            array_push($usuarios, $fila);
+        }
+        return $usuarios;
     }
 }
 ?>

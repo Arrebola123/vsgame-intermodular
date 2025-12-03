@@ -36,5 +36,36 @@ class CartaController
         }
         return false;
     }
+    public function editar($id)
+    {
+        $this->carta->id = $id;
+        if ($this->carta->obtenerPorId($id)) {
+            return $this->carta;
+        }
+        return null;
+    }
+
+    public function actualizar($datos)
+    {
+        $this->carta->id = $datos['id'];
+        $this->carta->nombre = $datos['nombre'];
+        $this->carta->ataque = $datos['ataque'];
+        $this->carta->defensa = $datos['defensa'];
+        $this->carta->imagen = $datos['imagen'];
+
+        if ($this->carta->actualizar()) {
+            return true;
+        }
+        return false;
+    }
+
+    public function eliminar($id)
+    {
+        $this->carta->id = $id;
+        if ($this->carta->eliminar()) {
+            return true;
+        }
+        return false;
+    }
 }
 ?>

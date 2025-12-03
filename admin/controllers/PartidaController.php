@@ -35,10 +35,11 @@ class PartidaController
         return $cartas;
     }
 
-    public function guardarPuntuacion($usuario_id, $puntuacion)
+    public function guardarPuntuacion($usuario_id, $wins, $loses)
     {
         $this->partida->usuario_id = $usuario_id;
-        $this->partida->puntuacion = $puntuacion;
+        $this->partida->wins = $wins;
+        $this->partida->loses = $loses;
 
         if ($this->partida->guardar()) {
             return ["mensaje" => "Puntuación guardada exitosamente."];
