@@ -218,12 +218,12 @@ async function handle_next_round(action) {
                 cartaJugador.src = "img/cards/" + carta1.url
                 cartaJugador.dataset.ataque = carta1.ataque
                 cartaJugador.dataset.defensa = carta1.defensa
-                ataqueJ1Mostrado.textContent = cartaJugador.dataset.ataque
-                defensaJ1Mostrado.textContent = cartaJugador.dataset.defensa
 
                 cartaJuego.src = "img/cards/" + carta2.url
                 cartaJuego.dataset.ataque = carta2.ataque
                 cartaJuego.dataset.defensa = carta2.defensa
+                ataqueJ1Mostrado.textContent = cartaJugador.dataset.ataque
+                defensaJ1Mostrado.textContent = cartaJugador.dataset.defensa
                 ataqueJ2Mostrado.textContent = cartaJuego.dataset.ataque
                 defensaJ2Mostrado.textContent = cartaJugador.dataset.defensa
 
@@ -329,6 +329,11 @@ async function handle_next_round(action) {
                 cartaJuego.src = "img/cards/" + carta2.url
                 cartaJuego.dataset.ataque = carta2.ataque
                 cartaJuego.dataset.defensa = carta2.defensa
+                
+                ataqueJ1Mostrado.textContent = cartaJugador.dataset.ataque
+                defensaJ1Mostrado.textContent = cartaJugador.dataset.defensa
+                ataqueJ2Mostrado.textContent = cartaJuego.dataset.ataque
+                defensaJ2Mostrado.textContent = cartaJugador.dataset.defensa
                 setTimeout(() => {
                     bandera.src = ""
                     bandera.alt = ""
