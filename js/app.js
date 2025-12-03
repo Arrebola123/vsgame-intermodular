@@ -384,7 +384,7 @@ async function mostrar_historial(){
                 usuario_id: gameState.usuario_id
             }),
         })
-
+        contenido_historial.innerHTML = ``;
         const datos = await response.json()
         datos.forEach(partida => {
             const cartaPartida = document.createElement("div");
