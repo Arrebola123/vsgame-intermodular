@@ -20,10 +20,14 @@
 <div class="container">
     <div class="card">
       <img src="img/cards/1_card.jpg" alt="Carta del Jugador" id="playerCard">
+      <div id="ataque1"></div>
+      <div id="defensa1"></div>
     </div>
     <img src="img/vs.png" alt="VS" class="vs">
     <div class="card">
       <img src="img/cards/2_card.jpg" alt="Carta de la Máquina" id="gameCard">
+      <div id="ataque2"></div>
+      <div id="defensa2"></div>
     </div>
     </div>
 <div class="container">
@@ -40,6 +44,9 @@
 </div>
   <a href="#" id="restartGame">
       <img src="img/restartgame.png" alt="reiniciar" >
+  </a>
+  <a href="#" id="showHistory">
+      Mostrar Historial
   </a>
 <div class="score">
     <div class="contentScore">
@@ -76,7 +83,7 @@
     <input type="email" id="player-email" placeholder="Introduce tu email" value="ricardo.renones@gmail.com"/>
     <br><br>
     <label for="player-passwd">Contraseña:</label>
-    <input type="password" id="player-passwd" value="Ricky08031979**"/>
+    <input type="password" id="player-passwd" value="Prueba123"/>
     <br><br>
     <button id="login-btn">Iniciar</button>
     <br><br>
@@ -101,6 +108,14 @@
     <br><br>
     <p id="modal-text">Tienes cuenta?</p>
     <button id="login-modal-btn">Iniciar Sesión</button>
+  </div>
+</div>
+<div id="history-modal" class="modal-overlay" style="display: none">
+  <div class="modal-content">
+    <button class="close-btn" id="closeHistoryBtn">&times;</button>
+    <h2>Historial</h2>
+    <div id="history-content" class="history-content">
+    </div>
   </div>
 </div>
 <script src="js/app.js"></script>

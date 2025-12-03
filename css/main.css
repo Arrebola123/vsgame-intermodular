@@ -106,6 +106,58 @@ button {
   animation: spin 2.5s linear infinite;
 }
 
+#showHistory{
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 100px;
+    border-radius: 50%;
+    background-color: rgba(0, 106, 255, 0.9);
+    transition: all 1s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    color: #000;
+    font-size: 14px;
+}
+
+#ataque1, #ataque2{
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-color: rgba(255, 0, 0,0.9);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    color: #000;
+    font-size: 14px;
+}
+#defensa1, #defensa2{
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-color: rgba(0, 255, 38,0.9);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    color: #000;
+    font-size: 14px;
+}
+#ataque1, #ataque2{
+  bottom:11.6px;
+  left: 2px;
+}
+#defensa1, #defensa2{
+  bottom:11.6px;
+  right: 2px;
+}
+
+
 @keyframes spin {
   0% {
     --rotate: 0deg;
@@ -187,7 +239,8 @@ button {
     transition: all 1s ease-in-out;
 }
 
-#restartGame:hover{
+
+#restartGame:hover,#showHistory:hover{
     top: 15px;
     transition: all 1s ease-in-out;
 }

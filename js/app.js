@@ -11,6 +11,11 @@ const contra_registro = document.getElementById("player-passwd-register")
 const btn_registro = document.getElementById("register-btn")
 const btn_modal_login = document.getElementById("login-modal-btn")
 
+const modal_historial = document.getElementById("history-modal")
+const cerrar_historial = document.getElementById("closeHistoryBtn")
+const contenido_historial = document.getElementById("history-content")
+const abrir_historial = document.getElementById("showHistory")
+
 const mensajeLogin = document.getElementById("login-msg")
 const mensajeRegistro = document.getElementById("register-msg")
 
@@ -31,6 +36,11 @@ const botonDefender = document.getElementById("defender")
 
 const contenedorBandera = document.getElementById("bandera")
 const bandera = contenedorBandera.firstElementChild
+
+const ataqueJ1Mostrado = document.getElementById('ataque1')
+const defensaJ1Mostrado = document.getElementById('defensa1')
+const ataqueJ2Mostrado = document.getElementById('ataque2')
+const defensaJ2Mostrado = document.getElementById('defensa2')
 
 const gameState = {
     id: 0,
@@ -189,141 +199,153 @@ async function start_game(usuario) {
 async function handle_next_round(action) {
     const carta1 = {} //carta usuario
     const carta2 = {} //de carta juego
-    try {
-        //Primera ronda obtencion de cartas
-        if (action == "start") {
-            const response = await fetch("api/cartas_aleatorias.php")
-            const data = await response.json()
+    if(!gameState.isGameOver){
+        try {
+            //Primera ronda obtencion de cartas
+            if (action == "start") {
+                const response = await fetch("api/cartas_aleatorias.php")
+                const data = await response.json()
 
-            //asignacion de variables para los 2 objetos a partir de la respuesta
-            carta1.ataque = data.ataque1
-            carta1.defensa = data.defensa1
-            carta1.url = data.url1
+                //asignacion de variables para los 2 objetos a partir de la respuesta
+                carta1.ataque = data.ataque1
+                carta1.defensa = data.defensa1
+                carta1.url = data.url1
 
-            carta2.ataque = data.ataque2
-            carta2.defensa = data.defensa2
-            carta2.url = data.url2
+                carta2.ataque = data.ataque2
+                carta2.defensa = data.defensa2
+                carta2.url = data.url2
 
-            cartaJugador.src = "img/cards/" + carta1.url
-            cartaJugador.dataset.ataque = carta1.ataque
-            cartaJugador.dataset.defensa = carta1.defensa
+                cartaJugador.src = "img/cards/" + carta1.url
+                cartaJugador.dataset.ataque = carta1.ataque
+                cartaJugador.dataset.defensa = carta1.defensa
+                ataqueJ1Mostrado.textContent = cartaJugador.dataset.ataque
+                defensaJ1Mostrado.textContent = cartaJugador.dataset.defensa
 
-            cartaJuego.src = "img/cards/" + carta2.url
-            cartaJuego.dataset.ataque = carta2.ataque
-            cartaJuego.dataset.defensa = carta2.defensa
+                cartaJuego.src = "img/cards/" + carta2.url
+                cartaJuego.dataset.ataque = carta2.ataque
+                cartaJuego.dataset.defensa = carta2.defensa
+                ataqueJ2Mostrado.textContent = cartaJuego.dataset.ataque
+                defensaJ2Mostrado.textContent = cartaJugador.dataset.defensa
 
-            tituloPopup.textContent = `Bienvenido ${gameState.nombre}!`
-            textoPopup.textContent = "Cierra este menu para comenzar a jugar"
 
-            contadorRondas.textContent = rondasJugadas
-        }
+                tituloPopup.textContent = `Bienvenido ${gameState.nombre}!`
+                textoPopup.textContent = "Cierra este menu para comenzar a jugar"
 
-        //El jugador elije ataque
-        else if (action == "attack") {
-            const ataqueJ = Number.parseInt(cartaJugador.dataset.ataque)
-            const defensaM = Number.parseInt(cartaJuego.dataset.defensa)
-
-            if (ataqueJ > defensaM) {
-                // gana jugador
-                rondasJugadas++
-                gameState.wins++
-                tituloPopup.textContent = `Jugada`
-                textoPopup.textContent = `Gana el jugador por ${ataqueJ} de ataque frente a ${defensaM} de defensa`
-                popup.classList.add("active")
-                bandera.src = "img/win1.png"
-                bandera.alt = "win"
-                contenedorBandera.classList.add("show")
-            } else if (ataqueJ === defensaM) {
-                // empate
-                tituloPopup.textContent = `Jugada`
-                textoPopup.textContent = `Empate: ambos tienen ${ataqueJ} de ataque/defensa`
-                popup.classList.add("active")
-                bandera.src = "img/win1.png"
-                bandera.alt = "draw"
-                contenedorBandera.classList.add("show")
-            } else {
-                // pierde jugador
-                rondasJugadas++
-                gameState.loses++
-                tituloPopup.textContent = `Jugada`
-                textoPopup.textContent = `Gana la máquina por ${defensaM} de defensa frente a ${ataqueJ} de ataque`
-                popup.classList.add("active")
-                bandera.src = "img/win2.png"
-                bandera.alt = "loss"
-                contenedorBandera.classList.add("show")
+                contadorRondas.textContent = rondasJugadas
             }
-        }
 
-        //El jugador elije defensa
-        else if (action == "defend") {
-            const defensaJ = Number.parseInt(cartaJugador.dataset.defensa)
-            const ataqueM = Number.parseInt(cartaJuego.dataset.ataque)
+            //El jugador elije ataque
+            else if (action == "attack") {
+                const ataqueJ = Number.parseInt(cartaJugador.dataset.ataque)
+                const defensaM = Number.parseInt(cartaJuego.dataset.defensa)
 
-            if (defensaJ > ataqueM) {
-                // gana
-                rondasJugadas++
-                gameState.wins++
-                tituloPopup.textContent = `Jugada`
-                textoPopup.textContent = `Gana el jugador por ${defensaJ} de defensa frente a ${ataqueM} de ataque`
-                popup.classList.add("active")
-                bandera.src = "img/win1.png"
-                bandera.alt = "win"
-                contenedorBandera.classList.add("show")
-            } else if (defensaJ == ataqueM) {
-                // empate
-                tituloPopup.textContent = `Jugada`
-                textoPopup.textContent = `Empate del jugador y la maquina de ${defensaJ} de defensa frente a ${ataqueM} de ataque`
-                popup.classList.add("active")
-                bandera.src = "img/win1.png"
-                bandera.alt = "draw"
-                contenedorBandera.classList.add("show")
-            } else {
-                // pierde
-                rondasJugadas++
-                gameState.loses++
-                tituloPopup.textContent = `Jugada`
-                textoPopup.textContent = `Gana la maquina por ${ataqueM} de ataque frente a ${defensaJ} de defensa`
-                popup.classList.add("active")
-                bandera.src = "img/win2.png"
-                bandera.alt = "loss"
-                contenedorBandera.classList.add("show")
+                if (ataqueJ > defensaM) {
+                    // gana jugador
+                    rondasJugadas++
+                    gameState.wins++
+                    tituloPopup.textContent = `Jugada`
+                    textoPopup.textContent = `Gana el jugador por ${ataqueJ} de ataque frente a ${defensaM} de defensa`
+                    popup.classList.add("active")
+                    bandera.src = "img/win1.png"
+                    bandera.alt = "win"
+                    contenedorBandera.classList.add("show")
+                } else if (ataqueJ === defensaM) {
+                    // empate
+                    tituloPopup.textContent = `Jugada`
+                    textoPopup.textContent = `Empate: ambos tienen ${ataqueJ} de ataque/defensa`
+                    popup.classList.add("active")
+                    bandera.src = "img/win1.png"
+                    bandera.alt = "draw"
+                    contenedorBandera.classList.add("show")
+                } else {
+                    // pierde jugador
+                    rondasJugadas++
+                    gameState.loses++
+                    tituloPopup.textContent = `Jugada`
+                    textoPopup.textContent = `Gana la máquina por ${defensaM} de defensa frente a ${ataqueJ} de ataque`
+                    popup.classList.add("active")
+                    bandera.src = "img/win2.png"
+                    bandera.alt = "loss"
+                    contenedorBandera.classList.add("show")
+                }
             }
+
+            //El jugador elije defensa
+            else if (action == "defend") {
+                const defensaJ = Number.parseInt(cartaJugador.dataset.defensa)
+                const ataqueM = Number.parseInt(cartaJuego.dataset.ataque)
+
+                if (defensaJ > ataqueM) {
+                    // gana
+                    rondasJugadas++
+                    gameState.wins++
+                    tituloPopup.textContent = `Jugada`
+                    textoPopup.textContent = `Gana el jugador por ${defensaJ} de defensa frente a ${ataqueM} de ataque`
+                    popup.classList.add("active")
+                    bandera.src = "img/win1.png"
+                    bandera.alt = "win"
+                    contenedorBandera.classList.add("show")
+                } else if (defensaJ == ataqueM) {
+                    // empate
+                    tituloPopup.textContent = `Jugada`
+                    textoPopup.textContent = `Empate del jugador y la maquina de ${defensaJ} de defensa frente a ${ataqueM} de ataque`
+                    popup.classList.add("active")
+                    bandera.src = "img/win1.png"
+                    bandera.alt = "draw"
+                    contenedorBandera.classList.add("show")
+                } else {
+                    // pierde
+                    rondasJugadas++
+                    gameState.loses++
+                    tituloPopup.textContent = `Jugada`
+                    textoPopup.textContent = `Gana la maquina por ${ataqueM} de ataque frente a ${defensaJ} de defensa`
+                    popup.classList.add("active")
+                    bandera.src = "img/win2.png"
+                    bandera.alt = "loss"
+                    contenedorBandera.classList.add("show")
+                }
+            }
+
+            if (gameState.rondas < rondasJugadas) {
+                endGame()
+            } else {
+                contadorRondas.textContent = rondasJugadas
+
+                const response = await fetch("api/cartas_aleatorias.php")
+                const data = await response.json()
+
+                carta1.ataque = data.ataque1
+                carta1.defensa = data.defensa1
+                carta1.url = data.url1
+
+                carta2.ataque = data.ataque2
+                carta2.defensa = data.defensa2
+                carta2.url = data.url2
+
+                cartaJugador.src = "img/cards/" + carta1.url
+                cartaJugador.dataset.ataque = carta1.ataque
+                cartaJugador.dataset.defensa = carta1.defensa
+
+                cartaJuego.src = "img/cards/" + carta2.url
+                cartaJuego.dataset.ataque = carta2.ataque
+                cartaJuego.dataset.defensa = carta2.defensa
+                setTimeout(() => {
+                    bandera.src = ""
+                    bandera.alt = ""
+                    contenedorBandera.classList.remove("show")
+                }, 4500)
+            }
+            puntuacionJ1.textContent = gameState.wins
+            puntuacionJ2.textContent = gameState.loses
+        } catch (error) {
+            console.error("La petición de cartas ha fallado:", error)
         }
-
-        if (gameState.rondas < rondasJugadas) {
-            endGame()
-        } else {
-            contadorRondas.textContent = rondasJugadas
-
-            const response = await fetch("api/cartas_aleatorias.php")
-            const data = await response.json()
-
-            carta1.ataque = data.ataque1
-            carta1.defensa = data.defensa1
-            carta1.url = data.url1
-
-            carta2.ataque = data.ataque2
-            carta2.defensa = data.defensa2
-            carta2.url = data.url2
-
-            cartaJugador.src = "img/cards/" + carta1.url
-            cartaJugador.dataset.ataque = carta1.ataque
-            cartaJugador.dataset.defensa = carta1.defensa
-
-            cartaJuego.src = "img/cards/" + carta2.url
-            cartaJuego.dataset.ataque = carta2.ataque
-            cartaJuego.dataset.defensa = carta2.defensa
-            setTimeout(() => {
-                bandera.src = ""
-                bandera.alt = ""
-                contenedorBandera.classList.remove("show")
-            }, 4500)
-        }
-        puntuacionJ1.textContent = gameState.wins
-        puntuacionJ2.textContent = gameState.loses
-    } catch (error) {
-        console.error("La petición de cartas ha fallado:", error)
+    }else{
+        tituloPopup.textContent = `Partida`
+        textoPopup.textContent = `¡La partida ha terminado Si quieres volver a jugar pulsa restart game!`
+        popup.classList.add("active")
     }
+
 }
 
 async function endGame() {
@@ -333,7 +355,8 @@ async function endGame() {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 usuario_id: gameState.usuario_id,
-                puntuacion: gameState.wins,
+                wins: gameState.wins,
+                loses: gameState.loses
             }),
         })
 
@@ -350,6 +373,28 @@ async function endGame() {
     popup.classList.add("active")
 
     botonReiniciar.style.display = "block"
+}
+
+async function mostrar_historial(){
+    try {
+        const response = await fetch("api/obtener_historial.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                usuario_id: gameState.usuario_id
+            }),
+        })
+
+        const datos = await response.json()
+        datos.forEach(partida => {
+            const cartaPartida = document.createElement("div");
+            cartaPartida.textContent = `Partida del ${partida.fecha}, Victorias: ${partida.wins}, Derrotas: ${partida.loses}`
+            contenido_historial.appendChild(cartaPartida);
+        });
+        modal_historial.style.display = "flex";
+    } catch (error) {
+        console.error("Error al cargar Partidas:", error)
+    }
 }
 
 btn_inicio.addEventListener("click", async () => {
@@ -377,13 +422,12 @@ btn_modal_login.addEventListener("click", () => {
 botonAtacar.addEventListener("click", () => handle_next_round("attack"))
 botonDefender.addEventListener("click", () => handle_next_round("defend"))
 
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 botonReiniciar.addEventListener("click", () => {
     location.reload()
 })
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+abrir_historial.addEventListener("click",()=>{
+    mostrar_historial()
+})
 function validarEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     return emailRegex.test(email)
@@ -396,6 +440,9 @@ function validarPassword(password) {
 
 closePopupBtn.addEventListener("click", () => {
     popup.classList.remove("active")
+})
+cerrar_historial.addEventListener("click", () => {
+  modal_historial.style.display = "none"
 })
 
 window.addEventListener("click", (e) => {
