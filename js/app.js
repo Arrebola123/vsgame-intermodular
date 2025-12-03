@@ -225,7 +225,7 @@ async function handle_next_round(action) {
                 ataqueJ1Mostrado.textContent = cartaJugador.dataset.ataque
                 defensaJ1Mostrado.textContent = cartaJugador.dataset.defensa
                 ataqueJ2Mostrado.textContent = cartaJuego.dataset.ataque
-                defensaJ2Mostrado.textContent = cartaJugador.dataset.defensa
+                defensaJ2Mostrado.textContent = cartaJuego.dataset.defensa
 
 
                 tituloPopup.textContent = `Bienvenido ${gameState.nombre}!`
@@ -333,7 +333,7 @@ async function handle_next_round(action) {
                 ataqueJ1Mostrado.textContent = cartaJugador.dataset.ataque
                 defensaJ1Mostrado.textContent = cartaJugador.dataset.defensa
                 ataqueJ2Mostrado.textContent = cartaJuego.dataset.ataque
-                defensaJ2Mostrado.textContent = cartaJugador.dataset.defensa
+                defensaJ2Mostrado.textContent = cartaJuego.dataset.defensa
                 setTimeout(() => {
                     bandera.src = ""
                     bandera.alt = ""
